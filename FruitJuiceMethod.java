@@ -25,18 +25,18 @@ public class FruitJuiceMethod {
 
     public static void showStock() {
         StringBuilder stockInfo = new StringBuilder();
-        stockInfo.append("Select from the juices available:\n");
-        stockInfo.append("ID - | - ITEM NAME - | - ITEM QTY\n");
-        stockInfo.append(String.format("1    |  Apple Juice  | %d\n", apple.getNoOfItems()));
-        stockInfo.append(String.format("2    |  Orange Juice | %d\n", orange.getNoOfItems()));
-        stockInfo.append(String.format("3    |  Mango Juice  | %d\n", mango.getNoOfItems()));
-        stockInfo.append(String.format("4    |  Punch Juice  | %d\n", punch.getNoOfItems()));
+        stockInfo.append("Select from the juices available:\n")
+	        .append("ID - | - ITEM NAME - | - ITEM QTY\n")
+	        .append(String.format("1    |  Apple Juice  | %d\n", apple.getNoOfItems()))
+	        .append(String.format("2    |  Orange Juice | %d\n", orange.getNoOfItems()))
+	        .append(String.format("3    |  Mango Juice  | %d\n", mango.getNoOfItems()))
+	        .append(String.format("4    |  Punch Juice  | %d\n", punch.getNoOfItems()));
 
         JOptionPane.showMessageDialog(null, stockInfo.toString());
     }
 
     public static void selectProduct() {
-        String input = JOptionPane.showInputDialog("Enter juice choice (input num):");
+    	String input = JOptionPane.showInputDialog( "Enter juice choice (input num):");
         int choice = Integer.parseInt(input);
 
         switch (choice) {
@@ -65,9 +65,8 @@ public class FruitJuiceMethod {
 
             double actualCost = count * juice.getCost();
             DecimalFormat df = new DecimalFormat("0.00");
-            JOptionPane.showMessageDialog(null, "Total cost to pay: Php. " + df.format(actualCost));
 
-            String cashInput = JOptionPane.showInputDialog("Enter amount to pay: Php.");
+            String cashInput = JOptionPane.showInputDialog("Total cost to pay: Php. " + df.format(actualCost) + "\nEnter amount to pay: Php.");
             double cash = receiveCash(actualCost, cashInput);
 
             juice.makeSale(count);
@@ -98,18 +97,21 @@ public class FruitJuiceMethod {
     }
 
     public static double receiveCash(double actualCost, String input) {
-        double newValue;
+        
+    	DecimalFormat df = new DecimalFormat("0.00");
+    	double newValue;
+    	
         try {
             newValue = Double.parseDouble(input);
             if (verifyCashAmount(newValue, actualCost)) {
                 return newValue;
             } else {
-                JOptionPane.showMessageDialog(null, "Please enter an amount greater than or equal to the total cost.");
-                return receiveCash(actualCost, JOptionPane.showInputDialog("Enter amount to pay: Php."));
+                JOptionPane.showMessageDialog(null, "Please enter an amount greater than or equal to Php. " + df.format(actualCost));
+                return receiveCash(actualCost, JOptionPane.showInputDialog("Enter amount to pay (at least Php. " + df.format(actualCost) + "): Php."));
             }
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Invalid input. Please enter a valid cash amount.");
-            return receiveCash(actualCost, JOptionPane.showInputDialog("Enter amount to pay: Php."));
+            return receiveCash(actualCost, JOptionPane.showInputDialog("Enter amount to pay (at least Php. " + df.format(actualCost) + "): Php."));
         }
     }
 
@@ -122,7 +124,26 @@ public class FruitJuiceMethod {
     }
 
     private static boolean programTerminator() {
-        String newChoice = JOptionPane.showInputDialog("Do you like to purchase again? (Y/N)");
-        return newChoice != null && newChoice.trim().equalsIgnoreCase("Y");
+    	boolean validInput = true;
+    	
+    	String[] options = {"Yes", "No"};
+        int choice = JOptionPane.showOptionDialog(null,
+            "Do you like to purchase again? (Y/N) ",
+            "Continuing Choice",
+            JOptionPane.DEFAULT_OPTION,
+            JOptionPane.QUESTION_MESSAGE,
+            null,
+            options,
+            options[0]);
+        
+        switch (choice) {
+	        case 0:
+	        	break;
+	        case 1:
+	        	validInput = false;
+	        	break;
+        }
+        
+        return validInput;
     }
 }
