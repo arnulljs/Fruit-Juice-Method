@@ -16,9 +16,7 @@ public class CashRegister {
 	public CashRegister() {
 		cashOnHand = 5000.00;
 	}
-	
 
-	//heloworld
 	public CashRegister(double cashIn) {
 		cashOnHand = cashIn;
 	}

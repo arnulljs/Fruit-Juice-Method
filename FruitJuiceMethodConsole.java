@@ -68,7 +68,7 @@ public class FruitJuiceMethodConsole {
     
     private static void processOrder(DispenserType juice) {
         if (juice.verifyStock()) {
-            System.out.printf("How many items would you like to purchase? ");
+            System.out.print("How many items would you like to purchase? ");
             int count = receiveCount(juice.getNoOfItems());
             
             double actualCost = count * juice.getCost();
